@@ -1,0 +1,41 @@
+{
+  "name": "contact-keeper-server",
+  "version": "1.0.0",
+  "description": "REST API endpoints to serve Contact Keeper Client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src --out-dir dist --source-maps",
+    "serve": "node dist/index.js",
+    "start": "babel-node src/index.js",
+    "server": "nodemon ./src/index.js --exec babel-node",
+    "lint": "eslint src/**/*.js --ignore-pattern \"node_modules/\""
+  },
+  "keywords": [
+    "nodejs",
+    "auth",
+    "jsonwebToken"
+  ],
+  "author": "Luis Arpasi",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "babel-eslint": "^10.0.2",
+    "eslint": "^6.0.1",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-node": "^9.1.0",
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.6.1"
+  },
+  "engines": {
+    "node": ">=8.10.0"
+  }
+}
