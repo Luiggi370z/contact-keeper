@@ -7,7 +7,7 @@ const app = express()
 app.set('port', process.env.PORT || 5000)
 
 // Middlewares
-app.use(express.json())
+app.use(express.json({ extended: false }))
 
 // Routes
 app.use('/api', routes)

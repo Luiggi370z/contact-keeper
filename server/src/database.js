@@ -8,6 +8,8 @@ const attachConnectionEvents = mediator => {
 }
 
 export const connect = async mediator => {
+  mediator.emit('busy', 'Connecting to Database')
+
   try {
     await Mongoose.connect(process.env.MONGO_DB_URI, {
       useNewUrlParser: true,
