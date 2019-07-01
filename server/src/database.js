@@ -14,7 +14,7 @@ export const connect = async mediator => {
     await Mongoose.connect(process.env.MONGO_DB_URI, {
       useNewUrlParser: true,
       useCreateIndex: true,
-      useFindAndModify: true,
+      useFindAndModify: false,
     })
     attachConnectionEvents(mediator)
   } catch (err) {
