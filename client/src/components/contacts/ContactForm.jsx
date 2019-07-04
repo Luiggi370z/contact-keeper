@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { ContactContext } from 'context/contact'
+import { RadioButtonList, InputField } from 'components/ui'
 
 const typeOptions = [
   { label: 'Personal', value: 'personal' },
@@ -8,37 +9,19 @@ const typeOptions = [
 
 const initialContact = { name: '', email: '', phone: '', type: 'personal' }
 
-const InputField = ({ field, label, ...props }) => (
-  <div className="field">
-    <label htmlFor={field}>{label}</label>
-    <input id={field} name={field} type="text" {...props} />
-  </div>
-)
-
-const RadioButtonList = ({ selectedValue, field, options, onChange }) => (
-  <div className="inline fields">
-    {options.map(option => (
-      <div className="field" key={option.value}>
-        <div className="ui radio checkbox">
-          <input
-            id={option.value}
-            type="radio"
-            name={field}
-            value={option.value}
-            checked={selectedValue === option.value}
-            tabIndex="0"
-            className="hidden"
-            onChange={onChange}
-          />
-          <label htmlFor={option.value}>{option.label}</label>
-        </div>
-      </div>
-    ))}
-  </div>
-)
-
 const ContactForm = () => {
   const contactContext = useContext(ContactContext)
+  const {
+    addContact,
+    clearCurrentContact,
+    currentContact,
+    updateContact,
+  } = contactContext
+
+  useEffect(() => {
+    setContact(currentContact || initialContact)
+  }, [contactContext, currentContact])
+
   const [contact, setContact] = useState(initialContact)
 
   const { name, email, phone, type } = contact
@@ -46,15 +29,22 @@ const ContactForm = () => {
   const onChange = e =>
     setContact({ ...contact, [e.target.name]: e.target.value })
 
+  const clearAll = () => {
+    clearCurrentContact()
+  }
+
   const onSubmit = e => {
     e.preventDefault()
 
-    contactContext.addContact(contact)
-    setContact(initialContact)
+    if (currentContact) updateContact(contact)
+    else addContact(contact)
+
+    clearAll()
   }
 
   return (
     <form className="ui form" onSubmit={onSubmit}>
+      <h2>{`${contact.id ? 'Edit' : 'New'} Contact`}</h2>
       <h4 className="ui dividing header">Basic Information</h4>
       <InputField field="name" label="Name" value={name} onChange={onChange} />
       <InputField
@@ -69,8 +59,8 @@ const ContactForm = () => {
         value={phone}
         onChange={onChange}
       />
-      <h4 className="ui dividing header">Contact Type</h4>
 
+      <h4 className="ui dividing header">Contact Type</h4>
       <RadioButtonList
         selectedValue={type}
         field="type"
@@ -78,7 +68,16 @@ const ContactForm = () => {
         onChange={onChange}
       />
 
-      <input className="ui button primary" type="submit" value="Add Contact" />
+      {currentContact && (
+        <button className="ui button basic" type="button" onClick={clearAll}>
+          Discard
+        </button>
+      )}
+      <input
+        className="ui button primary"
+        type="submit"
+        value={`${currentContact ? 'Update' : 'Add'} Contact`}
+      />
     </form>
   )
 }

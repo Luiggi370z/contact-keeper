@@ -1,10 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 
+import { ContactContext } from 'context/contact'
 import { Card, List, Button } from 'semantic-ui-react'
 
 const ContactItem = ({ contact }) => {
+  const contactContext = useContext(ContactContext)
+
   const { id, name, email, phone, type } = contact
+  const {
+    deleteContact,
+    setCurrentContact,
+    clearCurrentContact,
+  } = contactContext
+
+  const onDeleteContact = () => {
+    deleteContact(id)
+    clearCurrentContact()
+  }
+  const onEditContact = () => setCurrentContact(contact)
 
   return (
     <Card link>
@@ -42,10 +56,10 @@ const ContactItem = ({ contact }) => {
         </Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <Button basic floated="left">
+        <Button basic floated="left" onClick={onDeleteContact}>
           Delete
         </Button>
-        <Button primary floated="right">
+        <Button primary floated="right" onClick={onEditContact}>
           Edit
         </Button>
       </Card.Content>

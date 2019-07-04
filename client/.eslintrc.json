@@ -22,7 +22,15 @@
     "comma-dangle": "off",
     "indent": "off",
     "no-trailing-spaces": "off",
-    "react/jsx-filename-extension": 0
+    "react/jsx-filename-extension": 0,
+    "jsx-a11y/label-has-for": [
+      2,
+      {
+        "required": {
+          "every": ["id"]
+        }
+      }
+    ]
   },
   "settings": {
     "import/resolver": {
