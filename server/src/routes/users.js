@@ -18,7 +18,7 @@ const getUserValidations = [
   }),
 ]
 
-router.get('/', [getUserValidations], async (req, res) => {
+router.post('/', [getUserValidations], async (req, res) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
 
@@ -59,10 +59,6 @@ router.get('/', [getUserValidations], async (req, res) => {
     console.log(err.message)
     res.status(500).send('Server error')
   }
-})
-
-router.post('/', (req, res) => {
-  res.send('Register User')
 })
 
 export default router
