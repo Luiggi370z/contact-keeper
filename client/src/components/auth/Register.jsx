@@ -1,21 +1,28 @@
 import React, { useState, useContext, useEffect } from 'react'
+import PropTypes from 'prop-types'
+
 import { InputField } from 'components/ui'
 import { AuthContext } from 'context/auth'
 import { AlertContext } from 'context/alert'
 
-const Register = () => {
+const Register = ({ history }) => {
   const authContext = useContext(AuthContext)
-  const { register, error, clearErrors } = authContext
+  const { register, error, clearErrors, isAuthenticated } = authContext
 
   const alertContext = useContext(AlertContext)
   const { setAlert } = alertContext
 
   useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/')
+    }
+
     if (error) {
       setAlert(error, 'negative')
       clearErrors()
     }
-  }, [error])
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, history])
 
   const [user, setUser] = useState({
     name: '',
@@ -35,6 +42,10 @@ const Register = () => {
     } else if (password !== passwordConfirm)
       setAlert('Passwords do not match', 'negative')
     else register({ name, email, password })
+  }
+
+  const cancel = () => {
+    history.push('/login')
   }
 
   return (
@@ -70,10 +81,20 @@ const Register = () => {
           value={passwordConfirm}
           onChange={onChange}
         />
+        <input
+          className="ui button basic"
+          type="button"
+          value="Cancel"
+          onClick={cancel}
+        />
         <input className="ui button primary" type="submit" value="Register" />
       </form>
     </div>
   )
+}
+
+Register.propTypes = {
+  history: PropTypes.instanceOf(Object).isRequired,
 }
 
 export default Register

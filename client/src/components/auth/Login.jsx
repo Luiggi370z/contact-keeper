@@ -1,9 +1,27 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { InputField } from 'components/ui'
 import { AuthContext } from 'context/auth'
+import { AlertContext } from 'context/alert'
 
-const Login = () => {
+const Login = ({ history }) => {
   const authContext = useContext(AuthContext)
+  const { login, error, clearErrors, isAuthenticated } = authContext
+
+  const alertContext = useContext(AlertContext)
+  const { setAlert } = alertContext
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/')
+    }
+
+    if (error === 'Invalid Credentials') {
+      setAlert(error, 'negative')
+      clearErrors()
+    }
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, history])
 
   const [user, setUser] = useState({
     email: '',
@@ -15,7 +33,9 @@ const Login = () => {
 
   const onSubmit = e => {
     e.preventDefault()
-    authContext.login(user)
+
+    if (!email || !password) setAlert('Please enter all fields', 'negative')
+    else login({ email, password })
   }
 
   return (
@@ -25,6 +45,7 @@ const Login = () => {
         <InputField
           field="email"
           label="Email"
+          required
           value={email}
           onChange={onChange}
         />
@@ -37,6 +58,10 @@ const Login = () => {
         />
         <input className="ui button primary" type="submit" value="Login" />
       </form>
+      <div className="ui segment">
+        <span>New to us? </span>
+        <Link to="/register">Sign Up</Link>
+      </div>
     </div>
   )
 }

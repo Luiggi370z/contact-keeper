@@ -1,10 +1,35 @@
-import React from 'react'
+import React, { Fragment, useContext } from 'react'
 import PropTypes from 'prop-types'
 
 import { NavLink } from 'react-router-dom'
-import { Menu, Icon } from 'semantic-ui-react'
+import { Menu, Icon, Button, Divider } from 'semantic-ui-react'
+import { AuthContext } from 'context/auth'
 
 const Navbar = ({ title, icon }) => {
+  const authContext = useContext(AuthContext)
+
+  const { isAuthenticated, logout, user } = authContext
+
+  const onLogout = () => {
+    logout()
+  }
+
+  const authLinks = (
+    <Fragment>
+      <Menu.Item exact as={NavLink} to="/" name="home">
+        Contacts
+      </Menu.Item>
+      <Menu.Item>
+        <span className="ui teal header">{user && user.name}</span>
+      </Menu.Item>
+      <Menu.Item>
+        <Button circular icon color="blue" onClick={onLogout}>
+          <Icon name="log out" />
+        </Button>
+      </Menu.Item>
+    </Fragment>
+  )
+
   return (
     <Menu stackable size="large" borderless>
       <Menu.Item>
@@ -15,18 +40,10 @@ const Navbar = ({ title, icon }) => {
       </Menu.Item>
 
       <Menu.Menu position="right">
-        <Menu.Item exact as={NavLink} to="/" name="home">
-          Home
-        </Menu.Item>
         <Menu.Item as={NavLink} to="/about" name="about">
           About
         </Menu.Item>
-        <Menu.Item as={NavLink} to="/register" name="register">
-          Register
-        </Menu.Item>
-        <Menu.Item as={NavLink} to="/login" name="login">
-          Login
-        </Menu.Item>
+        {isAuthenticated && authLinks}
       </Menu.Menu>
     </Menu>
   )
