@@ -2,16 +2,20 @@ import React, { Fragment, useContext } from 'react'
 import PropTypes from 'prop-types'
 
 import { NavLink } from 'react-router-dom'
-import { Menu, Icon, Button, Divider } from 'semantic-ui-react'
+import { Menu, Icon, Button } from 'semantic-ui-react'
 import { AuthContext } from 'context/auth'
+import { ContactContext } from 'context/contact'
 
 const Navbar = ({ title, icon }) => {
   const authContext = useContext(AuthContext)
+  const contactContext = useContext(ContactContext)
 
   const { isAuthenticated, logout, user } = authContext
+  const { clearContacts } = contactContext
 
   const onLogout = () => {
     logout()
+    clearContacts()
   }
 
   const authLinks = (

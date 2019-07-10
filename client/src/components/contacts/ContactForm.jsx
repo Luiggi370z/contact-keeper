@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { ContactContext } from 'context/contact'
+import { AlertContext } from 'context/alert'
 import { RadioButtonList, InputField } from 'components/ui'
 
 const typeOptions = [
@@ -11,12 +12,16 @@ const initialContact = { name: '', email: '', phone: '', type: 'personal' }
 
 const ContactForm = () => {
   const contactContext = useContext(ContactContext)
+  const alertContext = useContext(AlertContext)
+
   const {
     addContact,
     clearCurrentContact,
     currentContact,
     updateContact,
   } = contactContext
+
+  const { setAlert } = alertContext
 
   useEffect(() => {
     setContact(currentContact || initialContact)
@@ -36,8 +41,13 @@ const ContactForm = () => {
   const onSubmit = e => {
     e.preventDefault()
 
-    if (currentContact) updateContact(contact)
-    else addContact(contact)
+    if (currentContact) {
+      updateContact(contact)
+      setAlert('Contact has been updated successfully.', 'positive')
+    } else {
+      addContact(contact)
+      setAlert('Contact has been added successfully.', 'positive')
+    }
 
     clearAll()
   }

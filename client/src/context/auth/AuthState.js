@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react'
 import axios from 'axios'
-import setAuthToken from 'utils/setAuthToken'
+import { setAuthToken, getHeader } from 'utils'
 import authReducer from './authReducer'
 import AuthContext from './authContext'
 import * as types from './types'
@@ -8,15 +8,9 @@ import * as types from './types'
 const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: null,
-  loading: false,
+  loading: true,
   user: null,
   error: null,
-}
-
-const headersConfig = {
-  headers: {
-    'Content-Type': 'application/json',
-  },
 }
 
 const AuthState = ({ children }) => {
@@ -35,7 +29,7 @@ const AuthState = ({ children }) => {
 
   const register = async formData => {
     try {
-      const res = await axios.post('/api/users', formData, headersConfig)
+      const res = await axios.post('/api/users', formData, getHeader)
       dispatch({ type: types.REGISTER_SUCCESS, payload: res.data })
 
       loadUser()
@@ -46,7 +40,7 @@ const AuthState = ({ children }) => {
 
   const login = async formData => {
     try {
-      const res = await axios.post('/api/auth', formData, headersConfig)
+      const res = await axios.post('/api/auth', formData, getHeader)
       dispatch({ type: types.LOGIN_SUCCESS, payload: res.data })
 
       loadUser()

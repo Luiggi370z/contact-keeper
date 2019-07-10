@@ -1,21 +1,24 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
-
 import { ContactContext } from 'context/contact'
+import { AlertContext } from 'context/alert'
 import { Card, List, Button } from 'semantic-ui-react'
 
 const ContactItem = ({ contact }) => {
   const contactContext = useContext(ContactContext)
+  const alertContext = useContext(AlertContext)
 
-  const { id, name, email, phone, type } = contact
+  const { _id: id, name, email, phone, type } = contact
   const {
     deleteContact,
     setCurrentContact,
     clearCurrentContact,
   } = contactContext
+  const { setAlert } = alertContext
 
   const onDeleteContact = () => {
     deleteContact(id)
+    setAlert('Contact was removed successfully', 'positive')
     clearCurrentContact()
   }
   const onEditContact = () => setCurrentContact(contact)

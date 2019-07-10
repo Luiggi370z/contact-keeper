@@ -2,21 +2,43 @@ import * as types from './types'
 
 export default (state, { type, payload }) => {
   switch (type) {
+    case types.GET_CONTACTS:
+      return { ...state, contacts: payload, loading: false }
+
     case types.ADD_CONTACT:
-      return { ...state, contacts: [...state.contacts, payload] }
+      return {
+        ...state,
+        contacts: [payload, ...state.contacts],
+        loading: false,
+      }
 
     case types.UPDATE_CONTACT:
       return {
         ...state,
         contacts: state.contacts.map(contact =>
-          contact.id === payload.id ? payload : contact,
+          contact._id === payload._id ? payload : contact,
         ),
+        loading: false,
       }
 
     case types.DELETE_CONTACT:
       return {
         ...state,
-        contacts: state.contacts.filter(contact => contact.id !== payload),
+        contacts: state.contacts.filter(contact => contact._id !== payload),
+        loading: false,
+      }
+
+    case types.CLEAR_CONTACTS:
+      return {
+        ...state,
+        contacts: null,
+        loading: false,
+      }
+
+    case types.CONTACT_ERROR:
+      return {
+        ...state,
+        error: payload,
       }
 
     case types.SET_CURRENT:

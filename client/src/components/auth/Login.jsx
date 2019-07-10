@@ -40,8 +40,10 @@ const Login = ({ history }) => {
 
   return (
     <div className="ui container">
-      <h2 className="ui header">Account Login</h2>
-      <form className="ui form" onSubmit={onSubmit}>
+      <div className="ui attached message">
+        <h2 className="ui header">Account Login</h2>
+      </div>
+      <form className="ui form attached fluid segment" onSubmit={onSubmit}>
         <InputField
           field="email"
           label="Email"
@@ -58,7 +60,8 @@ const Login = ({ history }) => {
         />
         <input className="ui button primary" type="submit" value="Login" />
       </form>
-      <div className="ui segment">
+      <div className="ui bottom attached warning message">
+        <i className="icon help" />
         <span>New to us? </span>
         <Link to="/register">Sign Up</Link>
       </div>

@@ -1,33 +1,42 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { ContactContext } from 'context/contact'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
-import { Card } from 'semantic-ui-react'
+import { Card, Loader } from 'semantic-ui-react'
 import ContactItem from './ContactItem'
 
 const Contacts = () => {
   const contactContext = useContext(ContactContext)
-  const { contacts, filtered } = contactContext
+  const { contacts, filtered, getContacts, loading } = contactContext
 
-  if (!contacts.length) return <h2>No contacts</h2>
+  useEffect(() => {
+    getContacts()
+    //eslint-disable-next-line
+  }, [])
+
+  if (contacts && !contacts.length && !loading) return <h2>No contacts</h2>
 
   const contactsList = filtered || contacts
 
   return (
     <Card.Group centered stackable>
-      <TransitionGroup component={null}>
-        {contactsList.map(contact => (
-          <CSSTransition
-            key={contact.id}
-            timeout={500}
-            classNames="item"
-            in
-            appear
-          >
-            <ContactItem contact={contact} />
-          </CSSTransition>
-        ))}
-      </TransitionGroup>
+      {contacts && !loading ? (
+        <TransitionGroup component={null}>
+          {contactsList.map(contact => (
+            <CSSTransition
+              key={contact._id}
+              timeout={500}
+              classNames="item"
+              in
+              appear
+            >
+              <ContactItem contact={contact} />
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      ) : (
+        <Loader active inline="centered" size="large" />
+      )}
     </Card.Group>
   )
 }

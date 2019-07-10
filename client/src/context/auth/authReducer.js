@@ -27,9 +27,9 @@ export default (state, { type, payload }) => {
     case types.USER_LOADED:
       return {
         ...state,
-        user: { ...payload },
         isAuthenticated: true,
         loading: false,
+        user: payload,
       }
 
     default:
