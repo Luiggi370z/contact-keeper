@@ -20,7 +20,10 @@ const ContactState = ({ children }) => {
       const res = await axios.get('/api/contacts', getHeader)
       dispatch({ type: types.GET_CONTACTS, payload: res.data })
     } catch (err) {
-      dispatch({ type: types.CONTACT_ERROR, payload: err.response.msg })
+      dispatch({
+        type: types.CONTACT_ERROR,
+        payload: err.response.data.msg,
+      })
     }
   }
 
@@ -30,7 +33,10 @@ const ContactState = ({ children }) => {
       const res = await axios.post('/api/contacts', contact, getHeader)
       dispatch({ type: types.ADD_CONTACT, payload: res.data })
     } catch (err) {
-      dispatch({ type: types.CONTACT_ERROR, payload: err.response.msg })
+      dispatch({
+        type: types.CONTACT_ERROR,
+        payload: err.response.data.msg,
+      })
     }
   }
 
@@ -43,7 +49,7 @@ const ContactState = ({ children }) => {
       )
       dispatch({ type: types.UPDATE_CONTACT, payload: res.data })
     } catch (err) {
-      dispatch({ type: types.CONTACT_ERROR, payload: err.response.msg })
+      dispatch({ type: types.CONTACT_ERROR, payload: err.response.data.msg })
     }
   }
 
@@ -52,7 +58,10 @@ const ContactState = ({ children }) => {
       await axios.delete(`/api/contacts/${id}`, getHeader)
       dispatch({ type: types.DELETE_CONTACT, payload: id })
     } catch (err) {
-      dispatch({ type: types.CONTACT_ERROR, payload: err.response.msg })
+      dispatch({
+        type: types.CONTACT_ERROR,
+        payload: err.response.data.msg,
+      })
     }
   }
 
