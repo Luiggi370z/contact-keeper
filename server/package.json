@@ -9,7 +9,8 @@
     "serve": "node dist/index.js",
     "start": "babel-node src/index.js",
     "server": "nodemon ./src/index.js --exec babel-node",
-    "lint": "eslint src/**/*.js --ignore-pattern \"node_modules/\""
+    "lint": "eslint src/**/*.js --ignore-pattern \"node_modules/\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run build"
   },
   "keywords": [
     "nodejs",
@@ -28,15 +29,15 @@
     "eslint": "^6.0.1",
     "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-node": "^9.1.0",
-    "nodemon": "^1.19.1",
-    "ora": "^3.4.0"
+    "nodemon": "^1.19.1"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "express-validator": "^6.0.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.6.1"
+    "mongoose": "^5.6.1",
+    "ora": "^3.4.0"
   },
   "engines": {
     "node": ">=8.10.0"
