@@ -24,7 +24,7 @@ const ContactItem = ({ contact }) => {
   const onEditContact = () => setCurrentContact(contact)
 
   return (
-    <Card link>
+    <Card fluid>
       <Card.Content>
         <Card.Header>{name}</Card.Header>
         <Card.Meta>
@@ -38,6 +38,7 @@ const ContactItem = ({ contact }) => {
           </div>
         </Card.Meta>
         <Card.Description>
+          <div className="ui inverted dimmer" />
           <List relaxed>
             {email && (
               <List.Item>

@@ -20,35 +20,33 @@ const Navbar = ({ title, icon }) => {
 
   const authLinks = (
     <Fragment>
-      <Menu.Item exact as={NavLink} to="/" name="home">
-        Contacts
-      </Menu.Item>
-      <Menu.Item>
-        <span className="ui teal header">{user && user.name}</span>
-      </Menu.Item>
-      <Menu.Item>
-        <Button circular icon color="blue" onClick={onLogout}>
-          <Icon name="log out" />
-        </Button>
-      </Menu.Item>
+      <Menu.Menu position="right">
+        <Menu.Item>
+          <h3 className="ui teal header">{user && user.name}</h3>
+        </Menu.Item>
+        <Menu.Item>
+          <Button circular icon color="blue" onClick={onLogout}>
+            <Icon name="log out" />
+          </Button>
+        </Menu.Item>
+      </Menu.Menu>
     </Fragment>
   )
 
   return (
     <Menu stackable size="large" borderless>
       <Menu.Item>
-        <Icon size="big" name={icon} fitted />
+        <Icon size="large" name={icon} fitted />
       </Menu.Item>
       <Menu.Item header>
-        <h2>{title}</h2>
+        <h3>{title}</h3>
       </Menu.Item>
 
-      <Menu.Menu position="right">
-        <Menu.Item as={NavLink} to="/about" name="about">
-          About
-        </Menu.Item>
-        {isAuthenticated && authLinks}
-      </Menu.Menu>
+      <Menu.Item as={NavLink} to="/about" name="about">
+        About
+      </Menu.Item>
+
+      <Menu.Menu position="right">{isAuthenticated && authLinks}</Menu.Menu>
     </Menu>
   )
 }

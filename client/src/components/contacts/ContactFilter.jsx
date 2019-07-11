@@ -17,8 +17,8 @@ const ContactFilter = () => {
 
   return (
     <form>
-      <div className="ui search">
-        <div className="ui icon input">
+      <div className="ui search fluid">
+        <div className="ui fluid left icon input">
           <input
             className="prompt"
             type="text"

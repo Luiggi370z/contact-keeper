@@ -12,3 +12,7 @@
   opacity: 0.01;
   transition: opacity 6000ms ease-in;
 }
+
+body {
+  background: rgba(0, 0, 0, 0.05);
+}

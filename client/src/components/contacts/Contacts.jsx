@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { ContactContext } from 'context/contact'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
-import { Card, Loader } from 'semantic-ui-react'
+import { Loader } from 'semantic-ui-react'
 import ContactItem from './ContactItem'
 
 const Contacts = () => {
@@ -19,7 +19,7 @@ const Contacts = () => {
   const contactsList = filtered || contacts
 
   return (
-    <Card.Group centered stackable>
+    <div className="ui container doubling stackable three column grid">
       {contacts && !loading ? (
         <TransitionGroup component={null}>
           {contactsList.map(contact => (
@@ -30,14 +30,16 @@ const Contacts = () => {
               in
               appear
             >
-              <ContactItem contact={contact} />
+              <div className="column">
+                <ContactItem contact={contact} />
+              </div>
             </CSSTransition>
           ))}
         </TransitionGroup>
       ) : (
         <Loader active inline="centered" size="large" />
       )}
-    </Card.Group>
+    </div>
   )
 }
 

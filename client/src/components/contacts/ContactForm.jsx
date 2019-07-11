@@ -10,7 +10,7 @@ const typeOptions = [
 
 const initialContact = { name: '', email: '', phone: '', type: 'personal' }
 
-const ContactForm = () => {
+const ContactForm = ({ onComplete }) => {
   const contactContext = useContext(ContactContext)
   const alertContext = useContext(AlertContext)
 
@@ -50,20 +50,29 @@ const ContactForm = () => {
     }
 
     clearAll()
+    onComplete()
   }
 
   return (
     <form className="ui form" onSubmit={onSubmit}>
       <h2>{`${contact.id ? 'Edit' : 'New'} Contact`}</h2>
       <h4 className="ui dividing header">Basic Information</h4>
-      <InputField field="name" label="Name" value={name} onChange={onChange} />
       <InputField
+        required
+        field="name"
+        label="Name"
+        value={name}
+        onChange={onChange}
+      />
+      <InputField
+        required
         field="email"
         label="Email"
         value={email}
         onChange={onChange}
       />
       <InputField
+        required
         field="phone"
         label="Phone"
         value={phone}
@@ -78,6 +87,9 @@ const ContactForm = () => {
         onChange={onChange}
       />
 
+      <button type="button" className="ui button basic" onClick={onComplete}>
+        Cancel
+      </button>
       {currentContact && (
         <button className="ui button basic" type="button" onClick={clearAll}>
           Discard
