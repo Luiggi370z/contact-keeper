@@ -8,7 +8,26 @@ const typeOptions = [
   { label: 'Professional', value: 'professional' },
 ]
 
-const initialContact = { name: '', email: '', phone: '', type: 'personal' }
+const genderOptions = [
+  { label: 'Male', value: 'M' },
+  { label: 'Female', value: 'F' },
+]
+
+const initialContact = {
+  name: '',
+  email: '',
+  phone: '',
+  type: 'personal',
+  gender: 'M',
+  avatarUrl: '',
+}
+
+const generateAvatar = gender => {
+  const id = Math.floor(Math.random() * 99) + 1
+  return `https://randomuser.me/api/portraits/${
+    gender === 'M' ? 'men' : 'women'
+  }/${id}.jpg`
+}
 
 const ContactForm = ({ onComplete }) => {
   const contactContext = useContext(ContactContext)
@@ -29,7 +48,7 @@ const ContactForm = ({ onComplete }) => {
 
   const [contact, setContact] = useState(initialContact)
 
-  const { name, email, phone, type } = contact
+  const { name, email, phone, type, gender } = contact
 
   const onChange = e =>
     setContact({ ...contact, [e.target.name]: e.target.value })
@@ -45,7 +64,7 @@ const ContactForm = ({ onComplete }) => {
       updateContact(contact)
       setAlert('Contact has been updated successfully.', 'positive')
     } else {
-      addContact(contact)
+      addContact({ ...contact, avatarUrl: generateAvatar(gender) })
       setAlert('Contact has been added successfully.', 'positive')
     }
 
@@ -76,6 +95,12 @@ const ContactForm = ({ onComplete }) => {
         field="phone"
         label="Phone"
         value={phone}
+        onChange={onChange}
+      />
+      <RadioButtonList
+        selectedValue={gender}
+        field="gender"
+        options={genderOptions}
         onChange={onChange}
       />
 

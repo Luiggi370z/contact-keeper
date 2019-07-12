@@ -8,7 +8,7 @@ export default (state, { type, payload }) => {
     case types.ADD_CONTACT:
       return {
         ...state,
-        contacts: [payload, ...state.contacts],
+        contacts: state.contacts ? [payload, ...state.contacts] : [payload],
         loading: false,
       }
 
@@ -67,6 +67,14 @@ export default (state, { type, payload }) => {
           return contact.name.match(regex) || contact.email.match(regex)
         }),
       }
+
+    case types.LOADING: {
+      return { ...state, loading: true }
+    }
+
+    case types.TOGGLE_CONTACT_MODAL: {
+      return { ...state, isModalOpen: payload }
+    }
 
     default:
       return state

@@ -22,11 +22,11 @@ const Navbar = ({ title, icon }) => {
     <Fragment>
       <Menu.Menu position="right">
         <Menu.Item>
-          <h3 className="ui teal header">{user && user.name}</h3>
+          <h3 className="ui blue header">{user && user.name}</h3>
         </Menu.Item>
         <Menu.Item>
-          <Button circular icon color="blue" onClick={onLogout}>
-            <Icon name="log out" />
+          <Button circular icon basic onClick={onLogout}>
+            <Icon name="log out" color="blue" size="large" />
           </Button>
         </Menu.Item>
       </Menu.Menu>

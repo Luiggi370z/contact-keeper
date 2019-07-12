@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react'
 import { ContactContext } from 'context/contact'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-
-import { Loader } from 'semantic-ui-react'
 import ContactItem from './ContactItem'
+import ContactsPlaceholder from './ContactsPlaceholder'
+import ContactsEmpty from './ContactsEmpty'
 
 const Contacts = () => {
   const contactContext = useContext(ContactContext)
@@ -14,7 +14,7 @@ const Contacts = () => {
     //eslint-disable-next-line
   }, [])
 
-  if (contacts && !contacts.length && !loading) return <h2>No contacts</h2>
+  if (contacts && !contacts.length && !loading) return <ContactsEmpty />
 
   const contactsList = filtered || contacts
 
@@ -37,7 +37,7 @@ const Contacts = () => {
           ))}
         </TransitionGroup>
       ) : (
-        <Loader active inline="centered" size="large" />
+        <ContactsPlaceholder />
       )}
     </div>
   )

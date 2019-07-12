@@ -11,11 +11,13 @@ const ContactState = ({ children }) => {
     current: null,
     filtered: null,
     error: null,
+    isModalOpen: false,
   }
 
   const [state, dispatch] = useReducer(contactReducer, initialState)
 
   const getContacts = async () => {
+    dispatch({ type: types.LOADING })
     try {
       const res = await axios.get('/api/contacts', getHeader)
       dispatch({ type: types.GET_CONTACTS, payload: res.data })
@@ -78,6 +80,9 @@ const ContactState = ({ children }) => {
     dispatch({ type: types.FILTER_CONTACTS, payload: text })
   }
 
+  const toggleContactModal = open =>
+    dispatch({ type: types.TOGGLE_CONTACT_MODAL, payload: open })
+
   return (
     <ContactContext.Provider
       value={{
@@ -85,6 +90,7 @@ const ContactState = ({ children }) => {
         currentContact: state.current,
         filtered: state.filtered,
         error: state.error,
+        isModalOpen: state.isModalOpen,
         getContacts,
         addContact,
         updateContact,
@@ -94,6 +100,7 @@ const ContactState = ({ children }) => {
         clearFilter,
         clearContacts,
         filterContacts,
+        toggleContactModal,
       }}
     >
       {children}

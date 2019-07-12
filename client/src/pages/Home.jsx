@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Contacts from 'components/contacts/Contacts'
-import ContactForm from 'components/contacts/ContactForm'
+
 import ContactFilter from 'components/contacts/ContactFilter'
 import { AuthContext } from 'context/auth'
 import { ContactContext } from 'context/contact'
-import { Modal } from 'semantic-ui-react'
+import ContactModal from 'components/contacts/ContactModal'
 
 const Home = () => {
   const authContext = useContext(AuthContext)
@@ -19,52 +19,34 @@ const Home = () => {
   }, [])
 
   const handleOpenModal = () => setOpenModal(!openModal)
-  const AddContact = () => (
-    <button
-      className="ui fluid button primary"
-      type="button"
-      onClick={handleOpenModal}
-    >
-      <i className="icon add" />
-      Add Contact
-    </button>
-  )
 
-  const ContactModal = () => (
-    <Modal
-      trigger={<AddContact />}
-      closeIcon
-      open={openModal}
-      onClose={handleOpenModal}
-      closeOnDimmerClick={false}
-    >
-      <Modal.Content>
-        <ContactForm onComplete={handleOpenModal} />
-      </Modal.Content>
-    </Modal>
-  )
+  const hasContacts = contacts && !!contacts.length
 
   return (
     <div className="ui grid container">
       <div className="row">
         <h2>
           My Contacts
-          <span style={{ color: 'gray', marginLeft: '7px' }}>
+          <span style={{ color: 'gray', marginLeft: '8px' }}>
             {contacts && contacts.length}
           </span>
         </h2>
       </div>
-      <div className="ui stackable row grid container">
-        <div className="row">
-          <div className="eight wide column">Presets</div>
-          <div className="five wide column">
-            <ContactFilter />
-          </div>
-          <div className="three wide column">
-            <ContactModal />
+      {hasContacts && (
+        <div className="ui stackable row grid container">
+          <div className="row">
+            <div className="eight wide column">
+              <ContactFilter />
+            </div>
+            <div className="eight wide column">
+              <ContactModal
+                openModal={openModal}
+                handleOpenModal={handleOpenModal}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      )}
       <div className="ui divider grid" />
       <div className="row">
         <Contacts />

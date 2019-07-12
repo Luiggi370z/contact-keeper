@@ -1,18 +1,21 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import PropTypes from 'prop-types'
+import { distanceInWordsToNow } from 'date-fns'
 import { ContactContext } from 'context/contact'
 import { AlertContext } from 'context/alert'
-import { Card, List, Button } from 'semantic-ui-react'
+import { Icon, List, Button, Image } from 'semantic-ui-react'
 
 const ContactItem = ({ contact }) => {
   const contactContext = useContext(ContactContext)
   const alertContext = useContext(AlertContext)
+  const [isHover, setIsHover] = useState(false)
 
-  const { _id: id, name, email, phone, type } = contact
+  const { _id: id, name, email, phone, type, avatarUrl, date } = contact
   const {
     deleteContact,
     setCurrentContact,
     clearCurrentContact,
+    toggleContactModal,
   } = contactContext
   const { setAlert } = alertContext
 
@@ -21,24 +24,51 @@ const ContactItem = ({ contact }) => {
     setAlert('Contact was removed successfully', 'positive')
     clearCurrentContact()
   }
-  const onEditContact = () => setCurrentContact(contact)
+  const onEditContact = () => {
+    setCurrentContact(contact)
+    toggleContactModal(true)
+  }
+
+  const onOver = () => {
+    setIsHover(true)
+  }
+
+  const onOut = () => {
+    setIsHover(false)
+  }
 
   return (
-    <Card fluid>
-      <Card.Content>
-        <Card.Header>{name}</Card.Header>
-        <Card.Meta>
-          <div
-            className={`ui label mini basic ${
-              type === 'personal' ? 'teal' : 'yellow'
-            }`}
-            style={{ textTransform: 'uppercase' }}
-          >
-            {type}
+    <div
+      className={`ui card fluid ${isHover && 'raised'}`}
+      onMouseOver={onOver}
+      onFocus={onOver}
+      onMouseOut={onOut}
+      onBlur={onOut}
+    >
+      <div className="blurring">
+        <div
+          className={`ui inverted dimmer ${isHover && 'active'}`}
+          style={{ borderRadius: '4px' }}
+        >
+          <div className="content">
+            <div className="center">
+              <Button icon circular onClick={onDeleteContact}>
+                <Icon name="trash" color="red" size="large" />
+              </Button>
+              <Button icon circular onClick={onEditContact}>
+                <Icon name="edit" color="blue" size="large" />
+              </Button>
+            </div>
           </div>
-        </Card.Meta>
-        <Card.Description>
-          <div className="ui inverted dimmer" />
+        </div>
+      </div>
+      <div className="content">
+        <Image src={avatarUrl} avatar size="massive" floated="left" />
+        <div className="header">{name}</div>
+        <div className="meta">
+          {`added ${distanceInWordsToNow(date, { addSuffix: true })}`}
+        </div>
+        <div className="description">
           <List relaxed>
             {email && (
               <List.Item>
@@ -57,17 +87,17 @@ const ContactItem = ({ contact }) => {
               </List.Item>
             )}
           </List>
-        </Card.Description>
-      </Card.Content>
-      <Card.Content extra>
-        <Button basic floated="left" onClick={onDeleteContact}>
-          Delete
-        </Button>
-        <Button primary floated="right" onClick={onEditContact}>
-          Edit
-        </Button>
-      </Card.Content>
-    </Card>
+          <div
+            className={`ui label mini basic ${
+              type === 'personal' ? 'teal' : 'yellow'
+            }`}
+            style={{ textTransform: 'uppercase' }}
+          >
+            {type}
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
