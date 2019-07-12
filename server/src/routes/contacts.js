@@ -31,7 +31,7 @@ router.post('/', [newContactValidation], async (req, res) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
 
-  const { name, email, phone, type } = req.body
+  const { name, email, phone, type, avatarUrl, gender } = req.body
 
   try {
     const newContact = new Contact({
@@ -39,6 +39,8 @@ router.post('/', [newContactValidation], async (req, res) => {
       email,
       phone,
       type,
+      avatarUrl,
+      gender,
       user: req.user.id,
     })
 

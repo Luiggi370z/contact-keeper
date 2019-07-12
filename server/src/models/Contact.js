@@ -20,6 +20,15 @@ const ContactSchema = mongoose.Schema({
     type: String,
     default: 'personal',
   },
+  gender: {
+    type: String,
+    enum: ['M', 'F'],
+    default: 'M',
+  },
+  avatarUrl: {
+    type: String,
+    required: true,
+  },
   date: {
     type: Date,
     default: Date.now,
