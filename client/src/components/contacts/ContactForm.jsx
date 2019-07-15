@@ -8,11 +8,6 @@ const typeOptions = [
   { label: 'Professional', value: 'professional' },
 ]
 
-const genderOptions = [
-  { label: 'Male', value: 'M' },
-  { label: 'Female', value: 'F' },
-]
-
 const initialContact = {
   name: '',
   email: '',
@@ -74,8 +69,9 @@ const ContactForm = ({ onComplete }) => {
 
   return (
     <form className="ui form" onSubmit={onSubmit}>
-      <h2>{`${contact.id ? 'Edit' : 'New'} Contact`}</h2>
-      <h4 className="ui dividing header">Basic Information</h4>
+      <h2 className="ui dividing header">
+        {`${contact._id ? 'Edit' : 'New'} Contact`}
+      </h2>
       <InputField
         required
         field="name"
@@ -83,48 +79,108 @@ const ContactForm = ({ onComplete }) => {
         value={name}
         onChange={onChange}
       />
-      <InputField
-        required
-        field="email"
-        label="Email"
-        value={email}
-        onChange={onChange}
-      />
-      <InputField
-        required
-        field="phone"
-        label="Phone"
-        value={phone}
-        onChange={onChange}
-      />
-      <RadioButtonList
-        selectedValue={gender}
-        field="gender"
-        options={genderOptions}
-        onChange={onChange}
-      />
+      <div className="fields">
+        <div className="eight wide field">
+          <InputField
+            required
+            field="email"
+            label="Email"
+            value={email}
+            onChange={onChange}
+          />
+        </div>
+        <div className="eight wide field">
+          <InputField
+            required
+            field="phone"
+            label="Phone"
+            value={phone}
+            onChange={onChange}
+          />
+        </div>
+      </div>
 
-      <h4 className="ui dividing header">Contact Type</h4>
-      <RadioButtonList
-        selectedValue={type}
-        field="type"
-        options={typeOptions}
-        onChange={onChange}
-      />
-
-      <button type="button" className="ui button basic" onClick={onComplete}>
-        Cancel
-      </button>
-      {currentContact && (
-        <button className="ui button basic" type="button" onClick={clearAll}>
-          Discard
+      <div className="fields">
+        <div className="eight wide field">
+          <label htmlFor="gender">Gender</label>
+          <div id="gender" className="ui large buttons">
+            <button
+              className={`ui icon button ${
+                gender === 'M' ? 'active primary' : ''
+              }`}
+              type="button"
+              value="M"
+              name="gender"
+              onClick={onChange}
+            >
+              <i className="male icon" style={{ pointerEvents: 'none' }} />
+            </button>
+            <div className="or" />
+            <button
+              className={`ui icon button ${
+                gender === 'F' ? 'active primary' : ''
+              }`}
+              type="button"
+              value="F"
+              name="gender"
+              onClick={onChange}
+            >
+              <i className="female icon" style={{ pointerEvents: 'none' }} />
+            </button>
+          </div>
+        </div>
+        <div className="eight wide field">
+          <label htmlFor="types">Contact Type</label>
+          <div id="types" className="ui large buttons">
+            <button
+              className={`ui icon button ${
+                type === 'personal' ? 'active primary' : ''
+              }`}
+              type="button"
+              value="personal"
+              name="type"
+              onClick={onChange}
+            >
+              Personal
+            </button>
+            <button
+              className={`ui icon button ${
+                type === 'professional' ? 'active primary' : ''
+              }`}
+              type="button"
+              value="professional"
+              name="type"
+              onClick={onChange}
+            >
+              Professional
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="ui divider" />
+      <div className="ui right aligned container">
+        <button
+          type="button"
+          className="ui button left floated basic"
+          onClick={onComplete}
+        >
+          Cancel
         </button>
-      )}
-      <input
-        className="ui button primary"
-        type="submit"
-        value={`${currentContact ? 'Update' : 'Add'} Contact`}
-      />
+        {currentContact && (
+          <button
+            className="ui button secondary"
+            type="button"
+            onClick={clearAll}
+          >
+            Discard
+          </button>
+        )}
+        <input
+          className="ui button primary"
+          type="submit"
+          value={`${currentContact ? 'Update' : 'Add'}`}
+        />
+      </div>
     </form>
   )
 }

@@ -32,21 +32,21 @@ const Home = () => {
           </span>
         </h2>
       </div>
-      {hasContacts && (
-        <div className="ui stackable row grid container">
-          <div className="row">
-            <div className="eight wide column">
-              <ContactFilter />
-            </div>
-            <div className="eight wide column">
-              <ContactModal
-                openModal={openModal}
-                handleOpenModal={handleOpenModal}
-              />
-            </div>
+
+      <div className="ui stackable row grid container">
+        <div className="row">
+          <div className="eight wide column">
+            <ContactFilter />
+          </div>
+          <div className="eight wide column">
+            <ContactModal
+              openModal={openModal}
+              handleOpenModal={handleOpenModal}
+            />
           </div>
         </div>
-      )}
+      </div>
+
       <div className="ui divider grid" />
       <div className="row">
         <Contacts />
