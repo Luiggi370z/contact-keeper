@@ -1,18 +1,17 @@
 import React from 'react'
-import ContactModal from './ContactModal'
 
-const ContactsEmpty = () => (
+const ContactsEmpty = ({ icon, message, children }) => (
   <div
     className="ui placeholder basic padded segment"
     style={{ width: '100%' }}
   >
     <div className="ui center aligned icon medium header">
-      <i className="circular user outline icon" />
+      <i className={`circular ${icon} outline icon`} />
     </div>
     <h3 style={{ opacity: 0.45, marginTop: 0, textAlign: 'center' }}>
-      No contacts found. Try to add one!
+      {message}
     </h3>
-    <ContactModal />
+    {children}
   </div>
 )
 

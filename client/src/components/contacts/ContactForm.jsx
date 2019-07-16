@@ -52,6 +52,11 @@ const ContactForm = ({ onComplete }) => {
     clearCurrentContact()
   }
 
+  const onCancel = () => {
+    clearAll()
+    onComplete()
+  }
+
   const onSubmit = e => {
     e.preventDefault()
 
@@ -101,7 +106,7 @@ const ContactForm = ({ onComplete }) => {
       </div>
 
       <div className="fields">
-        <div className="eight wide field">
+        <div className={`eight wide field ${contact._id ? 'disabled' : ''}`}>
           <label htmlFor="gender">Gender</label>
           <div id="gender" className="ui large buttons">
             <button
@@ -162,7 +167,7 @@ const ContactForm = ({ onComplete }) => {
         <button
           type="button"
           className="ui button left floated basic"
-          onClick={onComplete}
+          onClick={onCancel}
         >
           Cancel
         </button>

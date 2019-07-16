@@ -20,8 +20,6 @@ const Home = () => {
 
   const handleOpenModal = () => setOpenModal(!openModal)
 
-  const hasContacts = contacts && !!contacts.length
-
   return (
     <div className="ui grid container">
       <div className="row">

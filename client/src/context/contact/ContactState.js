@@ -10,6 +10,7 @@ const ContactState = ({ children }) => {
     contacts: null,
     current: null,
     filtered: null,
+    filter: null,
     error: null,
     isModalOpen: false,
   }
@@ -89,6 +90,7 @@ const ContactState = ({ children }) => {
         contacts: state.contacts,
         currentContact: state.current,
         filtered: state.filtered,
+        filter: state.filter,
         error: state.error,
         isModalOpen: state.isModalOpen,
         getContacts,
