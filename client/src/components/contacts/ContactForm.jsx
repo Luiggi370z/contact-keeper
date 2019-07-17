@@ -1,11 +1,32 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { ContactContext } from 'context/contact'
 import { AlertContext } from 'context/alert'
-import { RadioButtonList, InputField } from 'components/ui'
+import { InputField, ButtonGroupField } from 'components/ui'
+
+const genderOptions = [
+  {
+    label: 'Male',
+    value: 'M',
+  },
+  {
+    label: 'Female',
+    value: 'F',
+  },
+]
 
 const typeOptions = [
-  { label: 'Personal', value: 'personal' },
-  { label: 'Professional', value: 'professional' },
+  {
+    label: 'Family',
+    value: 'family',
+  },
+  {
+    label: 'Personal',
+    value: 'personal',
+  },
+  {
+    label: 'Professional',
+    value: 'professional',
+  },
 ]
 
 const initialContact = {
@@ -28,12 +49,7 @@ const ContactForm = ({ onComplete }) => {
   const contactContext = useContext(ContactContext)
   const alertContext = useContext(AlertContext)
 
-  const {
-    addContact,
-    clearCurrentContact,
-    currentContact,
-    updateContact,
-  } = contactContext
+  const { currentContact, addContact, updateContact } = contactContext
 
   const { setAlert } = alertContext
 
@@ -48,14 +64,9 @@ const ContactForm = ({ onComplete }) => {
   const onChange = e =>
     setContact({ ...contact, [e.target.name]: e.target.value })
 
-  const clearAll = () => {
-    clearCurrentContact()
-  }
+  const onCancel = () => onComplete()
 
-  const onCancel = () => {
-    clearAll()
-    onComplete()
-  }
+  const onDiscard = () => setContact(currentContact)
 
   const onSubmit = e => {
     e.preventDefault()
@@ -67,101 +78,64 @@ const ContactForm = ({ onComplete }) => {
       addContact({ ...contact, avatarUrl: generateAvatar(gender) })
       setAlert('Contact has been added successfully.', 'positive')
     }
-
-    clearAll()
     onComplete()
   }
 
+  const currentContactHasChanged =
+    currentContact && JSON.stringify(currentContact) !== JSON.stringify(contact)
+
   return (
-    <form className="ui form" onSubmit={onSubmit}>
+    <form className="ui equal width form" onSubmit={onSubmit}>
       <h2 className="ui dividing header">
-        {`${contact._id ? 'Edit' : 'New'} Contact`}
+        <div className="content">
+          {`${contact._id ? 'Edit' : 'New'} Contact`}
+        </div>
       </h2>
+      <br />
       <InputField
+        icon="user"
+        name="name"
+        placeholder="First and Last name"
         required
-        field="name"
-        label="Name"
         value={name}
         onChange={onChange}
       />
       <div className="fields">
-        <div className="eight wide field">
-          <InputField
-            required
-            field="email"
-            label="Email"
-            value={email}
-            onChange={onChange}
-          />
-        </div>
-        <div className="eight wide field">
-          <InputField
-            required
-            field="phone"
-            label="Phone"
-            value={phone}
-            onChange={onChange}
-          />
-        </div>
+        <InputField
+          icon="envelope"
+          name="email"
+          placeholder="E-mail address"
+          required
+          value={email}
+          onChange={onChange}
+        />
+        <InputField
+          icon="phone"
+          name="phone"
+          placeholder="Phone number"
+          required
+          value={phone}
+          onChange={onChange}
+        />
       </div>
-
       <div className="fields">
-        <div className={`eight wide field ${contact._id ? 'disabled' : ''}`}>
-          <label htmlFor="gender">Gender</label>
-          <div id="gender" className="ui large buttons">
-            <button
-              className={`ui icon button ${
-                gender === 'M' ? 'active primary' : ''
-              }`}
-              type="button"
-              value="M"
-              name="gender"
-              onClick={onChange}
-            >
-              <i className="male icon" style={{ pointerEvents: 'none' }} />
-            </button>
-            <div className="or" />
-            <button
-              className={`ui icon button ${
-                gender === 'F' ? 'active primary' : ''
-              }`}
-              type="button"
-              value="F"
-              name="gender"
-              onClick={onChange}
-            >
-              <i className="female icon" style={{ pointerEvents: 'none' }} />
-            </button>
-          </div>
-        </div>
-        <div className="eight wide field">
-          <label htmlFor="types">Contact Type</label>
-          <div id="types" className="ui large buttons">
-            <button
-              className={`ui icon button ${
-                type === 'personal' ? 'active primary' : ''
-              }`}
-              type="button"
-              value="personal"
-              name="type"
-              onClick={onChange}
-            >
-              Personal
-            </button>
-            <button
-              className={`ui icon button ${
-                type === 'professional' ? 'active primary' : ''
-              }`}
-              type="button"
-              value="professional"
-              name="type"
-              onClick={onChange}
-            >
-              Professional
-            </button>
-          </div>
-        </div>
+        <ButtonGroupField
+          disabled={!!contact._id}
+          field="gender"
+          selectedValue={gender}
+          icon="venus mars"
+          options={genderOptions}
+          onChange={onChange}
+        />
+        <ButtonGroupField
+          field="type"
+          selectedValue={type}
+          icon="tag"
+          options={typeOptions}
+          onChange={onChange}
+        />
       </div>
+      <br />
       <div className="ui divider" />
       <div className="ui right aligned container">
         <button
@@ -173,11 +147,14 @@ const ContactForm = ({ onComplete }) => {
         </button>
         {currentContact && (
           <button
-            className="ui button secondary"
+            className={`ui button secondary ${
+              !currentContactHasChanged ? 'disabled' : ''
+            }`}
             type="button"
-            onClick={clearAll}
+            onClick={onDiscard}
           >
             Discard
+            {currentContactHasChanged}
           </button>
         )}
         <input

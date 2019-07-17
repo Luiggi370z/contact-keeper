@@ -14,8 +14,8 @@ const Navbar = ({ title, icon }) => {
   const { clearContacts } = contactContext
 
   const onLogout = () => {
-    logout()
     clearContacts()
+    logout()
   }
 
   const authLinks = (

@@ -1,27 +1,24 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { Fragment, useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { InputField } from 'components/ui'
 import { AuthContext } from 'context/auth'
 import { AlertContext } from 'context/alert'
+import Alerts from 'components/layout/Alerts'
+import InputField from 'components/ui/InputField'
 
-const Login = ({ history }) => {
+const Login = () => {
   const authContext = useContext(AuthContext)
-  const { login, error, clearErrors, isAuthenticated } = authContext
+  const { login, error, clearErrors } = authContext
 
   const alertContext = useContext(AlertContext)
   const { setAlert } = alertContext
 
   useEffect(() => {
-    if (isAuthenticated) {
-      history.push('/')
-    }
-
     if (error === 'Invalid Credentials') {
       setAlert(error, 'negative')
       clearErrors()
     }
     // eslint-disable-next-line
-  }, [error, isAuthenticated, history])
+  }, [error])
 
   const [user, setUser] = useState({
     email: '',
@@ -39,56 +36,56 @@ const Login = ({ history }) => {
   }
 
   return (
-    <div className="ui middle aligned center aligned grid">
-      <div className="column">
-        <h2 className="ui teal image header">
-          <i className="users large fitted icon" />
-          <div className="content">Log-in to your account</div>
-        </h2>
-        <form className="ui large form" onSubmit={onSubmit}>
-          <div className="ui stacked segment">
-            <div className="field">
-              <div className="ui left icon input">
-                <i className="user icon" />
-                <input
-                  type="text"
-                  name="email"
-                  placeholder="E-mail address"
-                  required
-                  value={email}
-                  onChange={onChange}
-                />
-              </div>
-            </div>
-            <div className="field">
-              <div className="ui left icon input">
-                <i className="lock icon" />
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  required
-                  value={password}
-                  onChange={onChange}
-                />
-              </div>
-            </div>
-
-            <input
-              className="ui button fluid large teal submit"
-              type="submit"
-              value="Login"
-            />
-          </div>
-        </form>
-
-        <div className="ui message">
-          <i className="icon help" />
-          <span>New to us? </span>
-          <Link to="/register">Sign Up</Link>
+    <Fragment>
+      <button
+        type="button"
+        className="ui icon button primary rounded large"
+        style={{ pointerEvents: 'none', marginRight: '10px' }}
+      >
+        <i className="users large white icon" />
+      </button>
+      <h2 className="ui blue header" style={{ display: 'inline' }}>
+        <div className="content" style={{ margin: '8px 0px' }}>
+          Log-in to your account
         </div>
+      </h2>
+      <form
+        className="ui large form"
+        onSubmit={onSubmit}
+        style={{ marginTop: '5px' }}
+      >
+        <div className="ui stacked segment">
+          <InputField
+            icon="envelope"
+            name="email"
+            placeholder="E-mail address"
+            type="email"
+            required
+            value={email}
+            onChange={onChange}
+          />
+          <InputField
+            icon="lock"
+            name="password"
+            placeholder="Password"
+            type="password"
+            required
+            value={password}
+            onChange={onChange}
+          />
+          <input
+            className="ui button fluid large primary submit"
+            type="submit"
+            value="Login"
+          />
+        </div>
+        <Alerts />
+      </form>
+      <div className="ui message">
+        <span>New to us? </span>
+        <Link to="/register">Sign Up</Link>
       </div>
-    </div>
+    </Fragment>
   )
 }
 

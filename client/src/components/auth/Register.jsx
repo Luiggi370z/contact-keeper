@@ -1,10 +1,36 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { Fragment, useState, useContext, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import { InputField } from 'components/ui'
 import { AuthContext } from 'context/auth'
 import { AlertContext } from 'context/alert'
+import Alerts from 'components/layout/Alerts'
 
+const fields = [
+  {
+    field: 'name',
+    label: 'First and Last name',
+    icon: 'user',
+  },
+  {
+    field: 'email',
+    label: 'E-mail address',
+    icon: 'envelope',
+    type: 'email',
+  },
+  {
+    field: 'password',
+    label: 'Password',
+    icon: 'lock',
+    type: 'password',
+  },
+  {
+    field: 'passwordConfirm',
+    label: 'Confirm Password',
+    icon: 'lock open',
+    type: 'password',
+  },
+]
 const Register = ({ history }) => {
   const authContext = useContext(AuthContext)
   const { register, error, clearErrors, isAuthenticated } = authContext
@@ -45,51 +71,40 @@ const Register = ({ history }) => {
   }
 
   const cancel = () => {
-    history.push('/login')
+    history.push('/')
   }
 
   return (
-    <div className="ui">
-      <h1>Account Register</h1>
-      <form className="ui form" onSubmit={onSubmit}>
-        <InputField
-          field="name"
-          label="Name"
-          value={name}
-          onChange={onChange}
-          required
-        />
-        <InputField
-          field="email"
-          label="Email"
-          value={email}
-          onChange={onChange}
-          required
-        />
-        <InputField
-          type="password"
-          field="password"
-          label="Password"
-          value={password}
-          onChange={onChange}
-          required
-        />
-        <InputField
-          type="password"
-          field="passwordConfirm"
-          label="Confirm Password"
-          value={passwordConfirm}
-          onChange={onChange}
-        />
-        <input
-          className="ui button basic"
-          type="button"
-          value="Cancel"
-          onClick={cancel}
-        />
-        <input className="ui button primary" type="submit" value="Register" />
+    <Fragment>
+      <h2 className="ui blue header">
+        <div className="content">Create your account</div>
+      </h2>
+      <form className="ui large form" onSubmit={onSubmit}>
+        <div className="ui stacked segment">
+          {fields.map(item => (
+            <InputField
+              key={item.field}
+              icon={item.icon}
+              name={item.field}
+              placeholder={item.label}
+              type={item.type}
+              required
+              value={user[item.field]}
+              onChange={onChange}
+            />
+          ))}
+          <Alerts />
+
+          <input
+            className="ui button secondary "
+            type="button"
+            value="Cancel"
+            onClick={cancel}
+          />
+          <input className="ui button primary" type="submit" value="Register" />
+        </div>
       </form>
-    </div>
+    </Fragment>
   )
 }
 

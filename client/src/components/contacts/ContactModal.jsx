@@ -16,15 +16,23 @@ const AddContact = ({ handleOpenModal }) => (
 
 const ContactModal = () => {
   const contactContext = useContext(ContactContext)
-  const { isModalOpen, toggleContactModal } = contactContext
+  const {
+    isModalOpen,
+    toggleContactModal,
+    clearCurrentContact,
+  } = contactContext
 
-  const closeModal = () => toggleContactModal(false)
+  const closeModal = () => {
+    toggleContactModal(false)
+    clearCurrentContact()
+  }
   const openModal = () => toggleContactModal(true)
 
   return (
     <Modal
       trigger={<AddContact handleOpenModal={openModal} />}
       closeIcon
+      size="small"
       open={isModalOpen}
       onClose={closeModal}
       closeOnDimmerClick={false}

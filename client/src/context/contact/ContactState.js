@@ -10,6 +10,7 @@ const ContactState = ({ children }) => {
     contacts: null,
     current: null,
     filtered: null,
+    filter: null,
     error: null,
     isModalOpen: false,
   }
@@ -70,6 +71,10 @@ const ContactState = ({ children }) => {
   const setCurrentContact = contact =>
     dispatch({ type: types.SET_CURRENT, payload: contact })
 
+  const restoreCurrentContact = () => {
+    dispatch({ type: types.RESTORE_CURRENT_CONTACT })
+  }
+
   const clearCurrentContact = () => dispatch({ type: types.CLEAR_CURRENT })
 
   const clearFilter = () => dispatch({ type: types.CLEAR_FILTER })
@@ -89,6 +94,7 @@ const ContactState = ({ children }) => {
         contacts: state.contacts,
         currentContact: state.current,
         filtered: state.filtered,
+        filter: state.filter,
         error: state.error,
         isModalOpen: state.isModalOpen,
         getContacts,
@@ -101,6 +107,7 @@ const ContactState = ({ children }) => {
         clearContacts,
         filterContacts,
         toggleContactModal,
+        restoreCurrentContact,
       }}
     >
       {children}

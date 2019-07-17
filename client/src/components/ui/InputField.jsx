@@ -1,16 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const InputField = ({ field, label, type, ...props }) => (
+const InputField = ({ name, icon, type, ...props }) => (
   <div className="field">
-    <label htmlFor={field}>{label}</label>
-    <input id={field} name={field} type={type} {...props} />
+    <div className="ui left icon input">
+      <i className={`${icon} icon`} />
+      <input name={name} type={type} {...props} />
+    </div>
   </div>
 )
 
 InputField.propTypes = {
-  field: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  icon: PropTypes.string.isRequired,
   type: PropTypes.string,
 }
 

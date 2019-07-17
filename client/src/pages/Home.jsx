@@ -1,23 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Contacts from 'components/contacts/Contacts'
 
 import ContactFilter from 'components/contacts/ContactFilter'
-import { AuthContext } from 'context/auth'
 import { ContactContext } from 'context/contact'
 import ContactModal from 'components/contacts/ContactModal'
 
 const Home = () => {
-  const authContext = useContext(AuthContext)
   const contactContext = useContext(ContactContext)
-
   const { contacts } = contactContext
   const [openModal, setOpenModal] = useState(false)
-
-  useEffect(() => {
-    authContext.loadUser()
-    // eslint-disable-next-line
-  }, [])
-
   const handleOpenModal = () => setOpenModal(!openModal)
 
   return (

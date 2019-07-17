@@ -5,6 +5,12 @@ import { ContactContext } from 'context/contact'
 import { AlertContext } from 'context/alert'
 import { Image } from 'semantic-ui-react'
 
+const colors = {
+  personal: 'yellow',
+  family: 'pink',
+  professional: 'teal',
+}
+
 const ContactItem = ({ contact }) => {
   const contactContext = useContext(ContactContext)
   const alertContext = useContext(AlertContext)
@@ -25,7 +31,7 @@ const ContactItem = ({ contact }) => {
     clearCurrentContact()
   }
   const onEditContact = () => {
-    setCurrentContact(contact)
+    setCurrentContact(contact, false)
     toggleContactModal(true)
   }
 
@@ -78,7 +84,7 @@ const ContactItem = ({ contact }) => {
         <div className="meta">
           {`added ${distanceInWordsToNow(date, { addSuffix: true })}`}
         </div>
-        <div className="description">
+        <div className="description" style={{ paddingLeft: '13px' }}>
           <div className="ui relaxed list">
             <div className="item">
               <i className="large mail middle aligned icon" />
@@ -95,9 +101,7 @@ const ContactItem = ({ contact }) => {
           </div>
 
           <div
-            className={`ui label mini basic ${
-              type === 'personal' ? 'teal' : 'yellow'
-            }`}
+            className={`ui label mini basic ${colors[type]}`}
             style={{ textTransform: 'uppercase', margin: '5px 0' }}
           >
             {type}

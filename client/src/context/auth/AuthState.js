@@ -8,7 +8,7 @@ import * as types from './types'
 const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: null,
-  loading: true,
+  loading: false,
   user: null,
   error: null,
 }
@@ -17,6 +17,8 @@ const AuthState = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState)
 
   const loadUser = async () => {
+    dispatch({ type: types.LOADING })
+
     if (localStorage.token) setAuthToken(localStorage.token)
 
     try {
